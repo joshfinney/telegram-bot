@@ -27,7 +27,7 @@ async def everyone(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             chat_members = await context.bot.get_chat_members(update.effective_chat.id)
             
             # Create a list of all member mentions
-            mentions = sorted([member.user.mention_html() for member in chat_members if not member.user.is_bot])
+            mentions = [member.user.mention_html() for member in chat_members if not member.user.is_bot]
             
             # Craft the message
             message = """
