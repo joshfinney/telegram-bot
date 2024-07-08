@@ -63,16 +63,21 @@ async def main() -> None:
         application.add_handler(CommandHandler("everyone", everyone))
 
         if 'RENDER' in os.environ:
-            application.run_webhook(
+            await application.initialize()
+            await application.start()
+            await application.updater.start_webhook(
                 listen="0.0.0.0",
                 port=PORT,
                 webhook_url=WEBHOOK_URL
             )
+
+            # Keep the application running
+            await asyncio.Event().wait()
         else:
             await application.initialize()
             await application.start()
             await application.updater.start_polling(drop_pending_updates=True)
-            
+
             # Keep the application running
             while True:
                 await asyncio.sleep(1)
